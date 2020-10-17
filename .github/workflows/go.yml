@@ -37,4 +37,7 @@ jobs:
       run: go test -v .
 
     - name: Lint
-      uses: golangci-lint
+      uses: golint -set_exit_status ./...
+
+    - name: Vet
+      uses: go vet ./...
