@@ -1,4 +1,4 @@
-package main
+package code
 
 import (
 	"errors"
@@ -10,12 +10,27 @@ var ErrNoStructKey = errors.New("No struct key provided")
 // Tag represents a Golang struct tag of a required key
 // and optional value.
 type Tag interface {
+	// Key returns the tag key; it will never be an empty string.
 	Key() string
+
+	// Value returns the tag value; it may be an empty string.
 	Value() string
 
+	// String returns a Golang code representation of the tag.
+	//
+	// It follows the standard established by the reflect package,
+	// resulting in `key` or `key:"value"` output, depending on
+	// the presence of a non-empty `value`.
+	//
+	// If present, any double-quote characters in `value` will
+	// be escaped with a prefix slash, a la `VA\"UE`.
 	String() string
 }
 
+// NewTag returns a Tag with the provided key and optional value.
+//
+// The key MUST be a non-empty string, otherwise an error is returned.
+// Value may be empty.
 func NewTag(key string, value string) (Tag, error) {
 	if key == "" {
 		return nil, ErrNoStructKey
