@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 
-const EXPECTED_KEY = "KEY"
-const EXPECTED_VALUE = "VALUE"
+const expectedKey = "KEY"
+const expectedValue = "VALUE"
 
 func TestNewTag_noError(t *testing.T) {
-	tag, err := NewTag(EXPECTED_KEY, EXPECTED_VALUE)
+	tag, err := NewTag(expectedKey, expectedValue)
 	if tag == nil {
 		t.Errorf("expected tag, but received nil")
 	}
@@ -22,7 +22,7 @@ func TestNewTag_noError(t *testing.T) {
 }
 
 func TestNewTag_errorOnNoKey(t *testing.T) {
-	tag, err := NewTag("", EXPECTED_VALUE)
+	tag, err := NewTag("", expectedValue)
 	if tag != nil {
 		t.Errorf("expected nil tag, but received %v", tag)
 	}
@@ -31,33 +31,33 @@ func TestNewTag_errorOnNoKey(t *testing.T) {
 		t.Errorf("expected error, but received nil")
 	}
 
-	if !errors.Is(err, ErrNoStructKey) {
-		t.Errorf("did not receive expected wrapped error: ErrNoStructKey")
+	if !errors.Is(err, ErrNoTagKey) {
+		t.Errorf("did not receive expected wrapped error: ErrNoTagKey")
 	}
 }
 
 func TestTagKey(t *testing.T) {
-	tag, _ := NewTag(EXPECTED_KEY, EXPECTED_VALUE)
+	tag, _ := NewTag(expectedKey, expectedValue)
 
 	actualKey := tag.Key()
 
-	if actualKey != EXPECTED_KEY {
-		t.Errorf("actual %v != expected %v", actualKey, EXPECTED_KEY)
+	if actualKey != expectedKey {
+		t.Errorf("actual %v != expected %v", actualKey, expectedKey)
 	}
 }
 
 func TestTagValue(t *testing.T) {
-	tag, _ := NewTag(EXPECTED_KEY, EXPECTED_VALUE)
+	tag, _ := NewTag(expectedKey, expectedValue)
 
 	actualValue := tag.Value()
 
-	if actualValue != EXPECTED_VALUE {
-		t.Errorf("actual %v != expected %v", actualValue, EXPECTED_VALUE)
+	if actualValue != expectedValue {
+		t.Errorf("actual %v != expected %v", actualValue, expectedValue)
 	}
 }
 
 func TestTagString_keyOnly(t *testing.T) {
-	tag, _ := NewTag(EXPECTED_KEY, "")
+	tag, _ := NewTag(expectedKey, "")
 
 	representation := tag.String()
 	if representation != tag.Key() {
@@ -66,10 +66,10 @@ func TestTagString_keyOnly(t *testing.T) {
 }
 
 func TestTagString_withValue(t *testing.T) {
-	tag, _ := NewTag(EXPECTED_KEY, EXPECTED_VALUE)
+	tag, _ := NewTag(expectedKey, expectedValue)
 
 	representation := tag.String()
-	expected := fmt.Sprintf(`%s:"%s"`, EXPECTED_KEY, EXPECTED_VALUE)
+	expected := fmt.Sprintf(`%s:"%s"`, expectedKey, expectedValue)
 
 	if representation != expected {
 		t.Errorf("actual %v != expected %v", representation, expected)
@@ -80,10 +80,10 @@ func TestTagString_withEscapedValue(t *testing.T) {
 	value := `VA"LUE`
 	escapedValue := strings.Replace(value, `"`, `\"`, -1)
 
-	tag, _ := NewTag(EXPECTED_KEY, value)
+	tag, _ := NewTag(expectedKey, value)
 
 	representation := tag.String()
-	expected := fmt.Sprintf(`%s:"%s"`, EXPECTED_KEY, escapedValue)
+	expected := fmt.Sprintf(`%s:"%s"`, expectedKey, escapedValue)
 
 	if representation != expected {
 		t.Errorf("actual %v != expected %v", representation, expected)

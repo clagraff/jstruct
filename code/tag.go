@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-var ErrNoStructKey = errors.New("No struct key provided")
+// ErrNoTagKey represents an error where an empty key was provided.
+var ErrNoTagKey = errors.New("No struct key provided")
 
 // Tag represents a Golang struct tag of a required key
 // and optional value.
@@ -33,7 +34,7 @@ type Tag interface {
 // Value may be empty.
 func NewTag(key string, value string) (Tag, error) {
 	if key == "" {
-		return nil, ErrNoStructKey
+		return nil, ErrNoTagKey
 	}
 
 	return tag{
