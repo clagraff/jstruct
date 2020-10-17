@@ -43,6 +43,23 @@ func NewTag(key string, value string) (Tag, error) {
 	}, nil
 }
 
+// MustNewTag returns a Tag with the provided key and optional value.
+//
+// The key MUST be a non-empty string, otherwise an error is returned.
+// Value may be empty.
+//
+// Will panic on error.
+func MustNewTag(key string, value string) Tag {
+	if key == "" {
+		panic(ErrNoTagKey)
+	}
+
+	return tag{
+		key:   key,
+		value: value,
+	}
+}
+
 type tag struct {
 	key   string
 	value string
